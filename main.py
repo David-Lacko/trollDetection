@@ -39,6 +39,8 @@ y_test = test['is_troll']
 y_train = y_train.replace({'1': 1, '0': 0})
 y_test = y_test.replace({'1': 1, '0': 0})
 
+optymizers = ['adam', 'rmsprop', 'adagrad', 'adadelta', 'adamax', 'nadam']
+
 def preprocess_sentences(X_train, X_test):
     # Convert sentences to sequences
     tokenizer = Tokenizer(num_words=10000)
@@ -54,32 +56,27 @@ def preprocess_sentences(X_train, X_test):
 
 X_train, X_test = preprocess_sentences(X_train, X_test)
 
-#LSTM Model
-lstm = lstm_model()
-lstm = train_lstm_model(lstm, X_train, y_train, X_test, y_test)
-lstm_scores = predict_lstm_model(lstm, X_test, y_test)
+for opt in optymizers:
+    print("Optymizer: ", opt)
+    lstm = lstm_model(opt)
+    lstm = train_lstm_model(lstm, X_train, y_train, X_test, y_test)
+    lstm_scores = predict_lstm_model(lstm, X_test, y_test)
+    gru = gru_model(opt)
+    gru = train_gru_model(gru, X_train, y_train, X_test, y_test)
+    gru_scores = predict_gru_model(gru, X_test, y_test)
+    bilstm = bilstm_model(opt)
+    bilstm = train_bilstm_model(bilstm, X_train, y_train, X_test, y_test)
+    bilstm_scores = predict_bilstm_model(bilstm, X_test, y_test)
+    bigru = bigru_model(opt)
+    bigru = train_bigru_model(bigru, X_train, y_train, X_test, y_test)
+    bigru_scores = predict_bigru_model(bigru, X_test, y_test)
+    print("LSTM: %.2f%%" % (lstm_scores[1]*100))
+    print("GRU: %.2f%%" % (gru_scores[1]*100))
+    print("BiLSTM: %.2f%%" % (bilstm_scores[1]*100))
+    print("BiGRU: %.2f%%" % (bigru_scores[1]*100))
+    print("_"*50)
 
-#GRU Model
-gru = gru_model()
-gru = train_gru_model(gru, X_train, y_train, X_test, y_test)
-gru_scores = predict_gru_model(gru, X_test, y_test)
 
-#BiLSTM Model
-bilstm = bilstm_model()
-bilstm = train_bilstm_model(bilstm, X_train, y_train, X_test, y_test)
-bilstm_scores = predict_bilstm_model(bilstm, X_test, y_test)
-
-#BiGRU Model
-bigru = bigru_model()
-bigru = train_bigru_model(bigru, X_train, y_train, X_test, y_test)
-bigru_scores = predict_bigru_model(bigru, X_test, y_test)
-
-
-# print results
-print("LSTM Accuracy: %.2f%%" % (lstm_scores[1]*100))
-print("GRU Accuracy: %.2f%%" % (gru_scores[1]*100))
-print("BiLSTM Accuracy: %.2f%%" % (bilstm_scores[1]*100))
-print("BiGRU Accuracy: %.2f%%" % (bigru_scores[1]*100))
 
 
 

@@ -10,13 +10,12 @@ from keras.datasets import imdb
 
 
 #LSTM Model
-def lstm_model():
-    # create the model for binary classification
+def lstm_model(optymizer = "adam"):
     model = keras.models.Sequential()
     model.add(keras.layers.Embedding(10000, 128))
     model.add(keras.layers.LSTM(128, dropout=0.2, recurrent_dropout=0.2))
     model.add(keras.layers.Dense(46, activation='softmax'))
-    model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='sparse_categorical_crossentropy', optimizer= optymizer, metrics=['accuracy'])
     return model
 
 

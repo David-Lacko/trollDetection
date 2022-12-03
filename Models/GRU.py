@@ -1,13 +1,12 @@
 #GRU
 import keras
 
-def gru_model():
-    # create the model for binary classification
+def gru_model(optymizer = "adam"):
     model = keras.models.Sequential()
     model.add(keras.layers.Embedding(10000, 128))
     model.add(keras.layers.GRU(128, dropout=0.2, recurrent_dropout=0.2))
     model.add(keras.layers.Dense(46, activation='softmax'))
-    model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='sparse_categorical_crossentropy', optimizer=optymizer, metrics=['accuracy'])
     return model
 
 def train_gru_model(model, X_train, y_train, X_test, y_test,epochs=3, batch_size=64):
